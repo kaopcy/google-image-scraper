@@ -64,6 +64,10 @@ app.get("/facebook", async (req, res) => {
     res.json({ link: imageLink });
 });
 
-app.listen(8081, () => {
+app.get('/' , (req , res)=> {
+    res.send('hello')
+})
+
+app.listen(3042, () => {
     console.log("Listening on port 3000");
 });
