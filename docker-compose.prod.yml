@@ -4,5 +4,3 @@ services:
     build: .
     ports:
       - '3042:3042'
-    volumes:
-      - .:/usr/src/app
