@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - '8081:8081'
+      - '3042:3042'
     volumes:
       - .:/usr/src/app
 

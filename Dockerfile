@@ -25,10 +25,10 @@ COPY package.json ./
 RUN npm install
 
 # Copy handler function and tsconfig
-COPY server.js ./
+COPY . .
 
 # Expose app
-EXPOSE 8081
+EXPOSE 3042
 
 # Run app
 CMD ["node", "server.js"]
