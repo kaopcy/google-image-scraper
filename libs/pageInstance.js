@@ -1,12 +1,12 @@
 const puppeteer = require("puppeteer");
 
-class Singleton {
+class PuppeteerPage {
     #page = null;
     constructor() {
-        if (Singleton._instance) {
-            return Singleton._instance;
+        if (PuppeteerPage._instance) {
+            return PuppeteerPage._instance;
         }
-        Singleton._instance = this;
+        PuppeteerPage._instance = this;
     }
 
     async initialize() {
@@ -27,4 +27,4 @@ class Singleton {
     }
 }
 
-module.exports = Singleton;
+module.exports = PuppeteerPage;

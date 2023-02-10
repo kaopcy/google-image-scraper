@@ -6,18 +6,15 @@ const filterExistedLinks = async (oldLinks) => {
      */
     let newLinks = [];
     try {
-        const promises = oldLinks.map(async (link) => {
+        const promises = oldLinks.map(async (link , index) => {
             try {
+                console.log(`'start getlink ${index}'`)
                 await axios.get(link);
-                newLinks = oldLinks.filter(e=> e !== link)
-            } catch (error) {
-                console.log(error);
-            }
+                newLinks = oldLinks.filter((e) => e !== link);
+            } catch (error) {}
         });
         await Promise.all(promises);
-    } catch (error) {
-        console.log(error);
-    }
+    } catch (error) {}
     return newLinks;
 };
 

@@ -8,13 +8,17 @@
 const express = require("express");
 const cors = require("cors");
 
-const Page = require("./libs/pageInstance");
+const PuppeteerPage = require("./libs/pageInstance");
 const { writeFileSync } = require("./utils/writeFile");
 const {
     getPageContentFromKeyword,
     getPreferredPart,
     extractLinkFromContent,
 } = require("./libs/googleScrapFuncs");
+const {
+    mapFacebookLinks,
+    getFacebookImage,
+} = require("./libs/facebookScrapFuncs");
 const { filterExistedLinks } = require("./libs/imageExist");
 
 const app = express();
@@ -25,10 +29,10 @@ app.use(cors());
  * for example /image?keyword=วัดพระแก้ว
  */
 app.get("/image", async (req, res) => {
-    const { keyword } = req.query;
+    const { keyword, amount } = req.query;
     if (!keyword) throw new Error("must provide keyword to get images");
 
-    const pageInstance = new Page();
+    const pageInstance = new PuppeteerPage();
     await pageInstance.initialize();
 
     const page = pageInstance.getPage();
@@ -38,10 +42,26 @@ app.get("/image", async (req, res) => {
     const extractedData = getPreferredPart(pageContent);
     const optimizedLinks = extractLinkFromContent(extractedData);
 
-    const existedLinks = await filterExistedLinks(optimizedLinks);
+    const existedLinks = await (
+        await filterExistedLinks(optimizedLinks)
+    ).slice(0, Math.min(amount, optimizedLinks.length) || 10);
 
-    await writeFileSync("index.json", JSON.stringify(existedLinks));
-    res.json(existedLinks);
+    const furtherLinks = await mapFacebookLinks(existedLinks , page);
+
+    await writeFileSync("index.json", JSON.stringify(furtherLinks));
+    res.json(furtherLinks);
+});
+
+app.get("/facebook", async (req, res) => {
+    const pageInstance = new PuppeteerPage();
+    await pageInstance.initialize();
+
+    const page = pageInstance.getPage();
+
+    const link =
+        "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2924348144281926";
+    const imageLink = await getFacebookImage(link, page);
+    res.json({ link: imageLink });
 });
 
 app.listen(8081, () => {
