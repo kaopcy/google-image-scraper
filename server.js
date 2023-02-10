@@ -42,14 +42,14 @@ app.get("/image", async (req, res) => {
     const extractedData = getPreferredPart(pageContent);
     const optimizedLinks = extractLinkFromContent(extractedData);
 
-    const existedLinks = await (
-        await filterExistedLinks(optimizedLinks)
-    ).slice(0, Math.min(amount, optimizedLinks.length) || 10);
+    // const existedLinks = await (
+    //     await filterExistedLinks(optimizedLinks)
+    // ).slice(0, Math.min(amount, optimizedLinks.length) || 10);
 
-    const furtherLinks = await mapFacebookLinks(existedLinks , page);
+    // const furtherLinks = await mapFacebookLinks(existedLinks , page);
 
-    await writeFileSync("index.json", JSON.stringify(furtherLinks));
-    res.json(furtherLinks);
+    // await writeFileSync("index.json", JSON.stringify(furtherLinks));
+    res.json(optimizedLinks);
 });
 
 app.get("/facebook", async (req, res) => {

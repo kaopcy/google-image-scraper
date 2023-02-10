@@ -1,7 +1,3 @@
-const { writeFileSync } = require("../utils/writeFile");
-
-const puppeteer = require("puppeteer");
-
 const isFacebookLink = (link) => {
     const facebookLinkPattern = "lookaside.fbsbx.com";
     return link.includes(facebookLinkPattern);
