@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install gnupg wget -y && \
 WORKDIR /usr/src/app
 
 # Copy package.json
-COPY package.json ./
+COPY package*.json ./
 
 # Install NPM dependencies for function
 RUN npm install
