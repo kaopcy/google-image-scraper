@@ -5,6 +5,8 @@
  * from my guess the tbm params that value is "isch" mean that page is from "Image tab"
  */
 
+const PORT = process.env.PORT || 3042;
+
 const express = require("express");
 const cors = require("cors");
 
@@ -39,6 +41,8 @@ app.get("/image", async (req, res) => {
 
     const pageContent = await getPageContentFromKeyword(keyword, page);
 
+    writeFileSync("content.html", pageContent);
+
     const extractedData = getPreferredPart(pageContent);
     const optimizedLinks = extractLinkFromContent(extractedData);
 
@@ -64,10 +68,10 @@ app.get("/facebook", async (req, res) => {
     res.json({ link: imageLink });
 });
 
-app.get('/' , (req , res)=> {
-    res.send('hello')
-})
+app.get("/", (req, res) => {
+    res.send("hello");
+});
 
-app.listen(3042, () => {
-    console.log("Listening on port 3000");
+app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
 });

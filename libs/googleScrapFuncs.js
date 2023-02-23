@@ -37,7 +37,17 @@ const extractLinkFromContent = (pageContent) => {
      * after previous repeat the same regex but this time we extract prefered link instead
      */
     while ((match = regex.exec(pageContent)) !== null) {
+        pageContent = pageContent.replace(match[1], "");
         links.push(match[1]);
+    }
+
+    /**
+     * for getting source of image the google content will have pattern source always follow after image link
+     */
+    let sourceLink = []
+    while ((match = regex.exec(pageContent)) !== null) {
+        pageContent = pageContent.replace(match[1], "");
+        sourceLink.push(match[1]);
     }
 
     /**
@@ -48,7 +58,12 @@ const extractLinkFromContent = (pageContent) => {
         link.replace(/\\u003d/g, "=").replace(/\\u0026/g, "&")
     );
 
-    return optimizedLinks;
+    const linkWithSource = optimizedLinks.map((link , index) => ({
+        imageLink: link,
+        source: sourceLink[index]
+    }))
+
+    return linkWithSource;
 };
 
 module.exports = {
