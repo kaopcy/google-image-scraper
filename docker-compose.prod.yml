@@ -1,6 +1,11 @@
 version: '3'
+networks:
+  default:
+    external:
+      name: temple-webscraper
 services:
   app:
     build: .
     ports:
       - '4002:4002'
+    restart: always
