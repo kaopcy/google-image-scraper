@@ -20,11 +20,20 @@ const {
 const {
     mapFacebookLinks,
     getFacebookImage,
+    isFacebookLink,
 } = require("./libs/facebookScrapFuncs");
 const { filterExistedLinks } = require("./libs/imageExist");
+const { default: axios } = require("axios");
 
 const app = express();
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+    })
+);
 
 /**
  * main link for get image from search keyword
@@ -46,6 +55,10 @@ app.get("/image", async (req, res) => {
     const extractedData = getPreferredPart(pageContent);
     const optimizedLinks = extractLinkFromContent(extractedData);
 
+    const filterOutFacebookLinks = optimizedLinks.filter(
+        (link) => !isFacebookLink(link.url)
+    );
+
     // const existedLinks = await (
     //     await filterExistedLinks(optimizedLinks)
     // ).slice(0, Math.min(amount, optimizedLinks.length) || 10);
@@ -53,7 +66,10 @@ app.get("/image", async (req, res) => {
     // const furtherLinks = await mapFacebookLinks(existedLinks , page);
 
     // await writeFileSync("index.json", JSON.stringify(furtherLinks));
-    res.json(optimizedLinks);
+    res.json({
+        temple: keyword,
+        images: filterOutFacebookLinks.slice(0, amount || 10)
+    });
 });
 
 app.get("/facebook", async (req, res) => {
@@ -70,6 +86,11 @@ app.get("/facebook", async (req, res) => {
 
 app.get("/", (req, res) => {
     res.send("hello");
+});
+
+app.get("/test", async (req, res) => {
+    const { data } = await axios.get("http://192.168.1.44:8080/province");
+    res.json(data);
 });
 
 app.listen(PORT, () => {

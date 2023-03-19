@@ -18,6 +18,7 @@
         "node-fetch": "^3.3.0",
         "nodemon": "^2.0.20",
         "puppeteer": "^19.6.3",
-        "rapydscript": "^0.5.62"
+        "rapydscript": "^0.5.62",
+        "redis": "^4.6.4"
     }
 }

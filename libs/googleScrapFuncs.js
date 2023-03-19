@@ -59,8 +59,8 @@ const extractLinkFromContent = (pageContent) => {
     );
 
     const linkWithSource = optimizedLinks.map((link , index) => ({
-        imageLink: link,
-        source: sourceLink[index]
+        url: link,
+        src: sourceLink[index]
     }))
 
     return linkWithSource;

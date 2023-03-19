@@ -1,11 +1,15 @@
 version: '3'
+networks:
+  default:
+    external:
+      name: temple-webscraper
 services:
   app:
     build: .
     ports:
       - '3042:3042'
+    restart: always
     volumes:
       - .:/usr/src/app
 
     command: npm run start:dev
-    
