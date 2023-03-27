@@ -66,9 +66,13 @@ app.get("/image", async (req, res) => {
     // const furtherLinks = await mapFacebookLinks(existedLinks , page);
 
     // await writeFileSync("index.json", JSON.stringify(furtherLinks));
+    console.log({
+        temple: keyword,
+        images: filterOutFacebookLinks.slice(0, amount || 30),
+    });
     res.json({
         temple: keyword,
-        images: filterOutFacebookLinks.slice(0, amount || 10)
+        images: filterOutFacebookLinks.slice(0, amount || 30),
     });
 });
 
